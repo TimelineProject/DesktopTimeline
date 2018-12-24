@@ -30,9 +30,7 @@ namespace TimeLine
             status.HeaderText = "图片";
             status.Width = 150;
             dataGridView1.Columns.Insert(2, status);
-            //所有类似这样的数据库连接语句可以按照自己的要求进行更改
-            string constr = "server=localhost;User Id=root;password=980817;Database=timeline";
-            MySqlConnection mycon = new MySqlConnection(constr);
+            MySqlConnection mycon = new MySqlConnection(Program.constr);
             mycon.Open();
             MySqlDataReader reader = null;
             MySqlCommand mycom = mycon.CreateCommand();

@@ -43,8 +43,7 @@ namespace TimeLine
             errorTime -= 1;
             string username = textBoxUserName.Text.Trim();
             string passw = textBoxPassword.Text.Trim();
-            string constr = "server=localhost;User Id=root;password=980817;Database=timeline";
-            MySqlConnection mycon = new MySqlConnection(constr);
+            MySqlConnection mycon = new MySqlConnection(Program.constr);
             mycon.Open();
             MySqlCommand mycom = mycon.CreateCommand();
             string command = "select account,password from users where account='" + username + "' and password='"+passw+"'";

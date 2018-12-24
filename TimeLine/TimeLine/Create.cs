@@ -76,9 +76,8 @@ namespace TimeLine
             }
             else
             {
-                string constr = "server=localhost;User Id=root;password=980817;Database=timeline;charset=utf8";
                 string time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
-                MySqlConnection mycon = new MySqlConnection(constr);
+                MySqlConnection mycon = new MySqlConnection(Program.constr);
                 mycon.Open();
                 MySqlCommand mycom = mycon.CreateCommand();
                 string command = "insert into infos values('" + Program.user_id + "','" + content.ToString() + "','" + mypath + "','" + time + "')";

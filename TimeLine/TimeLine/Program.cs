@@ -11,6 +11,8 @@ namespace TimeLine
         public static bool isValidUser;
         public static int user_id;
         public static string user;
+        //各位使用数据库的时候自行更改
+        public static string constr = "server=localhost;User Id=root;password=;Database=software;charset=utf8";
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>

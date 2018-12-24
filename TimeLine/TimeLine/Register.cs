@@ -36,8 +36,7 @@ namespace TimeLine
         private void buttonRegister_Click(object sender, EventArgs e)
         {
             string name = textBoxUserName.Text.Trim();
-            string constr = "server=localhost;User Id=root;password=980817;Database=timeline";
-            MySqlConnection mycon = new MySqlConnection(constr);
+            MySqlConnection mycon = new MySqlConnection(Program.constr);
             mycon.Open();
             MySqlCommand mycom = mycon.CreateCommand();
             string command = "select account from users where account='" + name + "'";
