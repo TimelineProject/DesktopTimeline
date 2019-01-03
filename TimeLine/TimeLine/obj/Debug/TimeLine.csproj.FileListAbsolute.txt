@@ -17,7 +17,6 @@ D:\softwareproject\TimeLine\TimeLine\obj\Debug\TimeLine.Show.resources
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\bin\Debug\TimeLine.exe.config
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\bin\Debug\TimeLine.exe
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\bin\Debug\TimeLine.pdb
-D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.csprojAssemblyReference.cache
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.Create.resources
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.FormLogin.resources
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.FormRegister.resources
@@ -29,3 +28,4 @@ D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.cspro
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.csproj.CopyComplete
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.exe
 D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.pdb
+D:\newsoftwareproject\TimelineProject\TimeLine\TimeLine\obj\Debug\TimeLine.csprojAssemblyReference.cache

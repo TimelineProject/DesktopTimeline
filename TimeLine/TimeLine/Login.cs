@@ -9,12 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using TimeLine.Entity;
+using TimeLine.Server;
 
 namespace TimeLine
 {
     public partial class FormLogin : Form
     {
-        public static bool isValidUser;
         private int errorTime = 3;
 
         public FormLogin()
@@ -43,53 +44,36 @@ namespace TimeLine
             errorTime -= 1;
             string username = textBoxUserName.Text.Trim();
             string passw = textBoxPassword.Text.Trim();
-            MySqlConnection mycon = new MySqlConnection(Program.constr);
-            mycon.Open();
-            MySqlCommand mycom = mycon.CreateCommand();
-            string command = "select account,password from users where account='" + username + "' and password='"+passw+"'";
-            mycom.CommandText = command;
-            MySqlDataAdapter myDA = new MySqlDataAdapter();
-            myDA.SelectCommand = mycom;
-            DataSet myDS = new DataSet();
-            int n = myDA.Fill(myDS, "users");
-            if(n != 0)
+            User user = new User(username, passw);
+            UserDAO userDAO = new UserDAO();
+            if (userDAO.GetUserNumByAccountAndPassword(user) != 0)
             {
                 MessageBox.Show("登陆成功!");
-                Program.isValidUser = true;
-                command = "select user_id from users where account ='" + username + "' and password='" + passw + "'";
-                mycom.CommandText = command;
-                MySqlDataReader reader = null;
-                reader = mycom.ExecuteReader();
-                while (reader.Read())
-                {
-                    Program.user_id =Convert.ToInt32(reader[0].ToString());
-                }
-                reader.Close();
-                Program.user = username;
+                user.UserId = userDAO.getUserIdByUser(user);
+                user.ValidUser = true;
+                Program.programUser = user;
                 this.Close();
             }
             else
             {
-                if (errorTime > 0)
-                {
-                    MessageBox.Show("用户名或密码输入错误。请重新输入！还有" + errorTime.ToString() + "次机会");
-                    textBoxUserName.Text = "";
-                    textBoxPassword.Text = "";
-                    textBoxUserName.Focus();
-                }
-                else
-                {
-                    MessageBox.Show("你输入的用户名或密码已达到上限，将退出程序，请稍后再试");
-                    this.Close();
-                }
+                    if (errorTime > 0)
+                    {
+                        MessageBox.Show("用户名或密码输入错误。请重新输入！还有" + errorTime.ToString() + "次机会");
+                        textBoxUserName.Text = "";
+                        textBoxPassword.Text = "";
+                        textBoxUserName.Focus();
+                    }
+                    else
+                    {
+                        MessageBox.Show("你输入的用户名或密码已达到上限，将退出程序，请稍后再试");
+                        this.Close();
+                    }
             }
-            mycon.Close();
            
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            Program.isValidUser = false;
             this.Close();
         }
 

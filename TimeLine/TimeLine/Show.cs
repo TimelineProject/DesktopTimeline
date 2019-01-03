@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TimeLine.Entity;
+using TimeLine.IO;
+using TimeLine.Server;
 
 namespace TimeLine
 {
@@ -30,48 +34,23 @@ namespace TimeLine
             status.HeaderText = "图片";
             status.Width = 150;
             dataGridView1.Columns.Insert(2, status);
-            MySqlConnection mycon = new MySqlConnection(Program.constr);
-            mycon.Open();
-            MySqlDataReader reader = null;
-            MySqlCommand mycom = mycon.CreateCommand();
-            string command = "select account,information,image,time from infos natural join users order by time desc";
-            mycom.CommandText = command;
-            reader = mycom.ExecuteReader();
-            while (reader.Read())
+
+            ImageOP imageOP = new ImageOP();
+            MessageDAO messageDAO = new MessageDAO();
+            List<MixMsg> arrayList = messageDAO.GetData();
+
+            int i = 0;
+            while (i < arrayList.Count)
             {
                 int index = this.dataGridView1.Rows.Add();
-                this.dataGridView1.Rows[index].Cells[0].Value = reader[0].ToString();
-                this.dataGridView1.Rows[index].Cells[1].Value = reader[1].ToString();
-                string path = reader[2].ToString();
-                if (path != "")
-                {
-                    path = Application.StartupPath + "\\image\\" + path;
-                    this.dataGridView1.Rows[index].Cells[2].Value = Image.FromFile(path);
-                }
-                else
-                {
-                    path = Application.StartupPath + "\\image\\" + "nothing.png";
-                    this.dataGridView1.Rows[index].Cells[2].Value = Image.FromFile(path);
-                }
-
-                string time = reader[3].ToString();
-                DateTime date1 = Convert.ToDateTime(time);
-                DateTime date2 = DateTime.Now;
-                TimeSpan ts = date2.Subtract(date1);
-                if (ts.TotalMinutes < 60)
-                {
-                    int a = (int)ts.TotalMinutes;
-                    this.dataGridView1.Rows[index].Cells[3].Value = a.ToString() + "分钟前";
-                }
-                else
-                {
-                    int a = (int)ts.TotalMinutes / 60;
-                    this.dataGridView1.Rows[index].Cells[3].Value = a.ToString() + "小时前";
-                }
+                MixMsg mx  = arrayList[i];
+                this.dataGridView1.Rows[index].Cells[0].Value = mx.Account;
+                this.dataGridView1.Rows[index].Cells[1].Value = mx.Information;
+                this.dataGridView1.Rows[index].Cells[2].Value = imageOP.GetImageByPath(mx.Image);
+                this.dataGridView1.Rows[index].Cells[3].Value = mx.Time;
+                i++;
             }
             dataGridView1.AllowUserToAddRows = false;
-            reader.Close();
-            mycon.Close();
         }
     }
 }

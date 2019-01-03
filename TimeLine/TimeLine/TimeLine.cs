@@ -9,13 +9,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TimeLine.Entity;
+using TimeLine.IO;
+using TimeLine.Server;
 
 namespace TimeLine
 {
     public partial class TimeLine : Form
     {
-        private int row=0;
+        private int row = 0;
         private int lastn = 0;
+
         public TimeLine()
         {
             InitializeComponent();
@@ -27,60 +31,37 @@ namespace TimeLine
         }
 
 
-        
+
         private void TimeLine_Load(object sender, EventArgs e)
         {
-            int index=0;
+            int index = 0;
             DataGridViewImageColumn status = new DataGridViewImageColumn();
             status.Name = "image";
             status.HeaderText = "图片";
             status.Width = 150;
             dataGridView1.Columns.Insert(2, status);
+
+            int a = 0;
+            ImageOP imageOP = new ImageOP();
+            MessageDAO messageDAO = new MessageDAO();
+            List<MixMsg> arrayList = messageDAO.GetData();
+
             int i = 0;
-            MySqlConnection mycon = new MySqlConnection(Program.constr);
-            mycon.Open();
-            MySqlDataReader reader = null;
-            MySqlCommand mycom = mycon.CreateCommand();
-            string command = "select account,information,image,time from infos natural join users order by time desc";
-            mycom.CommandText = command;
-            reader = mycom.ExecuteReader();
-            while (reader.Read() && i<5)
+            while (i < arrayList.Count && a < 5)
             {
                 index = this.dataGridView1.Rows.Add();
-                row++;
-                this.dataGridView1.Rows[index].Cells[0].Value = reader[0].ToString();
-                this.dataGridView1.Rows[index].Cells[1].Value = reader[1].ToString();
-                string path = reader[2].ToString();
-                if (path != "")
-                {
-                   path = Application.StartupPath + "\\image\\" + path;
-                   this.dataGridView1.Rows[index].Cells[2].Value = Image.FromFile(path);
-                }
-                else
-                {
-                    path = Application.StartupPath + "\\image\\" + "nothing.png";
-                    this.dataGridView1.Rows[index].Cells[2].Value = Image.FromFile(path);
-                }
-                
-                string time = reader[3].ToString();
-                DateTime date1 = Convert.ToDateTime(time);
-                DateTime date2 = DateTime.Now;
-                TimeSpan ts = date2.Subtract(date1);
-                if (ts.TotalMinutes < 60)
-                {
-                    int a = (int)ts.TotalMinutes;
-                    this.dataGridView1.Rows[index].Cells[3].Value = a.ToString() + "分钟前";
-                }
-                else
-                {
-                    int a = (int )ts.TotalMinutes / 60;
-                    this.dataGridView1.Rows[index].Cells[3].Value = a.ToString() + "小时前";
-                }
+                MixMsg mx = arrayList[i];
+                this.dataGridView1.Rows[index].Cells[0].Value = mx.Account;
+                this.dataGridView1.Rows[index].Cells[1].Value = mx.Information;
+                this.dataGridView1.Rows[index].Cells[2].Value = imageOP.GetImageByPath(mx.Image);
+                this.dataGridView1.Rows[index].Cells[3].Value = mx.Time;
                 i++;
+                a++;
             }
+            row = a;
+            lastn = a;
             dataGridView1.AllowUserToAddRows = false;
-            reader.Close();
-            mycon.Close();
+
         }
 
         private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
@@ -97,113 +78,74 @@ namespace TimeLine
 
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            int index = 0;
-            int i = 0;
-            MySqlConnection mycon = new MySqlConnection(Program.constr);
-            mycon.Open();
-            MySqlDataReader reader = null;
-            MySqlCommand mycom = mycon.CreateCommand();
-            string command = "select account,information,image,time from users natural join infos order by time desc";
-            mycom.CommandText = command;
-            
-            MySqlDataAdapter myDA = new MySqlDataAdapter();
-            myDA.SelectCommand = mycom;
-            DataSet myDS = new DataSet();
-            //DataTable dtable;
-            int n = myDA.Fill(myDS, "infos");
-            //初次加载页面时，没有点击发布就一直摁更新按钮
+            ImageOP imageOP = new ImageOP();
+            MessageDAO messageDAO = new MessageDAO();
+            List<MixMsg> arrayList = messageDAO.GetData();
+
+            int n = arrayList.Count();
             if (n == row)
             {
                 return;
             }
-            //之后加载页面时，没有发布就一直摁更新按钮
-            else if(n == lastn)
+            else if (n == lastn)
             {
                 return;
             }
-            //之后比第一次的项多但是小于5 要创建新的行
-            else if(n > row && n<=5)
+            else if (n > lastn && n <= 5)
             {
-                for(int a = lastn; a < n; a++)
+                for (int a = lastn; a < n; a++)
                 {
                     this.dataGridView1.Rows.Add();
                 }
-                reader = mycom.ExecuteReader();
-                while (reader.Read() && i < 5)
+                int i = 0;
+                while (i < arrayList.Count)
                 {
-                    this.dataGridView1.Rows[index].Cells[0].Value = reader[0].ToString();
-                    this.dataGridView1.Rows[index].Cells[1].Value = reader[1].ToString();
-                    string path = reader[2].ToString();
-                    if (path != "")
-                    {
-                        path = Application.StartupPath + "\\image\\" + path;
-                        this.dataGridView1.Rows[index].Cells[2].Value = Image.FromFile(path);
-                    }
-                    else
-                    {
-                        path = Application.StartupPath + "\\image\\" + "nothing.png";
-                        this.dataGridView1.Rows[index].Cells[2].Value = Image.FromFile(path);
-                    }
-                    string time = reader[3].ToString();
-                    DateTime date1 = Convert.ToDateTime(time);
-                    DateTime date2 = DateTime.Now;
-                    TimeSpan ts = date2.Subtract(date1);
-                    if (ts.TotalMinutes < 60)
-                    {
-                        int a = (int)ts.TotalMinutes;
-                        this.dataGridView1.Rows[index].Cells[3].Value = a.ToString() + "分钟前";
-                    }
-                    else
-                    {
-                        int a = (int)ts.TotalMinutes / 60;
-                        this.dataGridView1.Rows[index].Cells[3].Value = a.ToString() + "小时前";
-                    }
-                    index++;
+                    MixMsg mx = arrayList[i];
+                    this.dataGridView1.Rows[i].Cells[0].Value = mx.Account;
+                    this.dataGridView1.Rows[i].Cells[1].Value = mx.Information;
+                    this.dataGridView1.Rows[i].Cells[2].Value = imageOP.GetImageByPath(mx.Image);
+                    this.dataGridView1.Rows[i].Cells[3].Value = mx.Time;
                     i++;
                 }
                 lastn = n;
-                reader.Close();
             }
-            else
+            else if(n > 5 && lastn < 5)
             {
-                reader = mycom.ExecuteReader();
-                while (reader.Read() && i < 5)
+                for (int a = lastn; a < 5; a++)
                 {
-                    this.dataGridView1.Rows[index].Cells[0].Value = reader[0].ToString();
-                    this.dataGridView1.Rows[index].Cells[1].Value = reader[1].ToString();
-                    string path = reader[2].ToString();
-                    if (path != "")
-                    {
-                        path = Application.StartupPath + "\\image\\" + path;
-                        this.dataGridView1.Rows[index].Cells[2].Value = Image.FromFile(path);
-                    }
-                    else
-                    {
-                        path = Application.StartupPath + "\\image\\" + "nothing.png";
-                        this.dataGridView1.Rows[index].Cells[2].Value = Image.FromFile(path);
-                    }
-                    string time = reader[3].ToString();
-                    DateTime date1 = Convert.ToDateTime(time);
-                    DateTime date2 = DateTime.Now;
-                    TimeSpan ts = date2.Subtract(date1);
-                    if (ts.TotalMinutes < 60)
-                    {
-                        int a = (int)ts.TotalMinutes;
-                        this.dataGridView1.Rows[index].Cells[3].Value = a.ToString() + "分钟前";
-                    }
-                    else
-                    {
-                        int a = (int)ts.TotalMinutes / 60;
-                        this.dataGridView1.Rows[index].Cells[3].Value = a.ToString() + "小时前";
-                    }
-                    index++;
+                    this.dataGridView1.Rows.Add();
+                }
+                int i = 0;
+
+                while (i < arrayList.Count && i < 5)
+                {
+                    MixMsg mx = arrayList[i];
+                    this.dataGridView1.Rows[i].Cells[0].Value = mx.Account;
+                    this.dataGridView1.Rows[i].Cells[1].Value = mx.Information;
+                    this.dataGridView1.Rows[i].Cells[2].Value = imageOP.GetImageByPath(mx.Image);
+                    this.dataGridView1.Rows[i].Cells[3].Value = mx.Time;
                     i++;
                 }
-                reader.Close();
+                lastn = n;
             }
-            mycon.Close();
+            else 
+            {
+                int i = 0;
+                int a = 0;
+                while (i < arrayList.Count && a < 5)
+                {
+                    MixMsg mx = arrayList[i];
+                    this.dataGridView1.Rows[i].Cells[0].Value = mx.Account;
+                    this.dataGridView1.Rows[i].Cells[1].Value = mx.Information;
+                    this.dataGridView1.Rows[i].Cells[2].Value = imageOP.GetImageByPath(mx.Image);
+                    this.dataGridView1.Rows[i].Cells[3].Value = mx.Time;
+                    i++;
+                    a++;
+                }
+            }
+            dataGridView1.AllowUserToAddRows = false;
         }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
             Show show = new Show();

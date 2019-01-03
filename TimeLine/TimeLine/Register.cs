@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TimeLine.Entity;
+using TimeLine.Server;
 
 namespace TimeLine
 {
@@ -36,16 +38,9 @@ namespace TimeLine
         private void buttonRegister_Click(object sender, EventArgs e)
         {
             string name = textBoxUserName.Text.Trim();
-            MySqlConnection mycon = new MySqlConnection(Program.constr);
-            mycon.Open();
-            MySqlCommand mycom = mycon.CreateCommand();
-            string command = "select account from users where account='" + name + "'";
-            mycom.CommandText = command;
-            MySqlDataAdapter myDA = new MySqlDataAdapter();
-            myDA.SelectCommand = mycom;
-            DataSet myDS = new DataSet();
-            int n = myDA.Fill(myDS, "users");
-            if (n != 0)
+            User user = new User(name);
+            UserDAO userDAO = new UserDAO();
+            if (userDAO.GetUserNumByAccount(user)!= 0)
             {
                 MessageBox.Show("用户名已存在", "提示");
                 textBoxUserName.Text = "";
@@ -62,14 +57,18 @@ namespace TimeLine
             }
             else
             {
-                command = "insert into users (account,password) values('" + textBoxUserName.Text+ "','"+textBoxPassword.Text+"')";
-                mycom.CommandText = command;
-                mycom.ExecuteNonQuery();
-                command = null;
-                MessageBox.Show("注册成功！", "提示");
+                string password = textBoxPassword.Text.Trim();
+                user.Password = password;
+                if (userDAO.RegisterUser(user) == 1)
+                {
+                    MessageBox.Show("注册成功！", "提示");
+                }
+                else
+                {
+                    MessageBox.Show("注册失败，请重新注册！", "提示");
+                }
                 this.Close();
             }
-            mycon.Close();
         }
 
         private void FormRegister_Load(object sender, EventArgs e)
