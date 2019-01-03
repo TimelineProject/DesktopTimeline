@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,12 @@ namespace TimeLine.IO
 
         public Image GetImageByPath(string path)
         {
-            return Image.FromFile(path);
+            try{
+              return Image.FromFile(path);
+            }
+            catch (FileNotFoundException e) {
+                return null;
+            }
         }
     }
 }

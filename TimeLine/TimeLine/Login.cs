@@ -69,7 +69,6 @@ namespace TimeLine
                         this.Close();
                     }
             }
-           
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
