@@ -20,6 +20,10 @@ namespace TimeLine.IO
             catch (FileNotFoundException e) {
                 return null;
             }
+            catch (OutOfMemoryException e)
+            {
+                return null;
+            }
         }
     }
 }
