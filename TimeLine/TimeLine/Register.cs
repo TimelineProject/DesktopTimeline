@@ -39,7 +39,7 @@ namespace TimeLine
         {
             string name = textBoxUserName.Text.Trim();
             User user = new User(name);
-            UserDAO userDAO = new UserDAO();
+            UserDAO userDAO = new UserDAO(new Database(Program.constr));
             if (userDAO.GetUserNumByAccount(user)!= 0)
             {
                 MessageBox.Show("用户名已存在", "提示");

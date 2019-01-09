@@ -53,7 +53,7 @@ namespace TimeLine
                 string time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
                 msg.Content = content;
                 msg.Time = time;
-                MessageDAO messageDAO = new MessageDAO();
+                MessageDAO messageDAO = new MessageDAO(new Database(Program.constr));
                 if(messageDAO.InsertDataByUserAndMessage(Program.programUser, msg) == 1)
                 {
                     MessageBox.Show("发表成功！", "提示");

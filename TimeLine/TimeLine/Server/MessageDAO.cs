@@ -7,17 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimeLine.Entity;
+using TimeLine.Interface;
 
 namespace TimeLine.Server
 {
-    public class MessageDAO
+    public class MessageDAO:IMessageDAO
     {
-        private Database mydatabase;
+        private IDatabase mydatabase;
         private MySqlDataReader reader;
 
-        public MessageDAO()
+        public MessageDAO(IDatabase db)
         {
-            mydatabase = new Database(Program.constr);
+            mydatabase = db;
             reader = null;
         }
 

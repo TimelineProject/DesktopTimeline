@@ -36,7 +36,7 @@ namespace TimeLine
             dataGridView1.Columns.Insert(2, status);
 
             ImageOP imageOP = new ImageOP();
-            MessageDAO messageDAO = new MessageDAO();
+            MessageDAO messageDAO = new MessageDAO(new Database(Program.constr));
             List<MixMsg> arrayList = messageDAO.GetData();
 
             int i = 0;

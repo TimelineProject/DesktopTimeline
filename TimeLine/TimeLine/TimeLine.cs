@@ -43,7 +43,7 @@ namespace TimeLine
 
             int a = 0;
             ImageOP imageOP = new ImageOP();
-            MessageDAO messageDAO = new MessageDAO();
+            MessageDAO messageDAO = new MessageDAO(new Database(Program.constr));
             List<MixMsg> arrayList = messageDAO.GetData();
 
             int i = 0;
@@ -79,7 +79,7 @@ namespace TimeLine
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
             ImageOP imageOP = new ImageOP();
-            MessageDAO messageDAO = new MessageDAO();
+            MessageDAO messageDAO = new MessageDAO(new Database(Program.constr));
             List<MixMsg> arrayList = messageDAO.GetData();
 
             int n = arrayList.Count();

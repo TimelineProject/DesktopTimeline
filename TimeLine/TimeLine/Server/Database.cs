@@ -5,10 +5,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeLine.Interface;
 
 namespace TimeLine.Server
 {
-    public class Database
+    public class Database:IDatabase
     {
         private static string mystr;
         private MySqlConnection mycon;
@@ -26,7 +27,7 @@ namespace TimeLine.Server
             return mycom;
         }
 
-        private void ConnectDb()
+        public void ConnectDb()
         {
             mycon = new MySqlConnection(mystr);
             mycon.Open();

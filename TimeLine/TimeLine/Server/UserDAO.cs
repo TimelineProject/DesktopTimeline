@@ -5,22 +5,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimeLine.Entity;
+using TimeLine.Interface;
 
 namespace TimeLine.Server
 {
-    public class UserDAO
+    public class UserDAO:IUserDAO
     {
-        private Database mydatabase;
+        private IDatabase mydatabase;
         private MySqlDataReader reader;
-
-        public UserDAO()
+        
+        public UserDAO(IDatabase db)
         {
-            mydatabase = new Database(Program.constr);
+            mydatabase = db;
             reader = null;
         }
 
         public int RegisterUser(User user)
         {
+            if (GetUserNumByAccount(user) > 0)
+            {
+                throw new Exception();
+            }
             string command = "insert into users (account,password) values('" + user.Username + "','" + user.Password + "')";
             int a = mydatabase.Execute(command);
             return a;

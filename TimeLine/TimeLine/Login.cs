@@ -45,7 +45,7 @@ namespace TimeLine
             string username = textBoxUserName.Text.Trim();
             string passw = textBoxPassword.Text.Trim();
             User user = new User(username, passw);
-            UserDAO userDAO = new UserDAO();
+            UserDAO userDAO = new UserDAO(new Database(Program.constr));
             if (userDAO.GetUserNumByAccountAndPassword(user) != 0)
             {
                 MessageBox.Show("登陆成功!");
