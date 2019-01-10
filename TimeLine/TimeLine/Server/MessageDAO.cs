@@ -15,6 +15,10 @@ namespace TimeLine.Server
     {
         private IDatabase mydatabase;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        private MySqlDataReader reader;
+>>>>>>> parent of ac03a7b... ForthChange
 =======
         private MySqlDataReader reader;
 >>>>>>> parent of ac03a7b... ForthChange

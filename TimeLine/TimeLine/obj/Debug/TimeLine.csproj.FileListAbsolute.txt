@@ -255,3 +255,15 @@ C:\Users\56324\Desktop\DesktopTimeline-master\TimeLine\TimeLine\obj\Debug\TimeLi
 C:\Users\56324\Desktop\DesktopTimeline-master\TimeLine\TimeLine\obj\Debug\TimeLine.csproj.CopyComplete
 C:\Users\56324\Desktop\DesktopTimeline-master\TimeLine\TimeLine\obj\Debug\TimeLine.exe
 C:\Users\56324\Desktop\DesktopTimeline-master\TimeLine\TimeLine\obj\Debug\TimeLine.pdb
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.csprojAssemblyReference.cache
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.exe.config
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.Create.resources
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.FormLogin.resources
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.FormRegister.resources
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.Properties.Resources.resources
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.Show.resources
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.TimeLine.resources
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.csproj.GenerateResource.cache
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.csproj.CoreCompileInputs.cache
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.exe
+D:\newsoftwareproject\DesktopTimeline\TimeLine\TimeLine\obj\Debug\TimeLine.pdb

@@ -90,8 +90,11 @@
     <Compile Include="IO\ImageOPTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Compile Include="Server\DatabaseTests.cs" />
     <Compile Include="Server\MessageDAOTests.cs" />
+=======
+>>>>>>> parent of ac03a7b... ForthChange
 =======
 >>>>>>> parent of ac03a7b... ForthChange
     <Compile Include="Server\UserDAOTests.cs" />
