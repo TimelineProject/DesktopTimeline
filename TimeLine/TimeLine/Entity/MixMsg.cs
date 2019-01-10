@@ -21,5 +21,13 @@ namespace TimeLine.Entity
             this.Time = "";
         }
 
+        public MixMsg(string acc,string image,string info,string time)
+        {
+            this.Account = acc;
+            this.Image = image;
+            this.Information = info;
+            this.Time = time;
+        }
+
     }
 }

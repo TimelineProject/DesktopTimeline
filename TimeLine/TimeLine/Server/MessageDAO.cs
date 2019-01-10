@@ -42,28 +42,29 @@ namespace TimeLine.Server
             while (reader.Read())
             {
                 MixMsg mixMsg = new MixMsg();
-                mixMsg.Account = reader[0].ToString();
-                mixMsg.Information = reader[1].ToString();
-                if (reader[2].ToString() == "")
+                mixMsg.Account = Convert.ToString(reader["user_id"]);
+                mixMsg.Information = Convert.ToString(reader["information"]);
+                if (Convert.ToString(reader["image"]) == "")
                 {
                     mixMsg.Image =  Application.StartupPath + "\\image\\" + "nothing.png";
                 }else
                 {
-                    mixMsg.Image = Application.StartupPath + "\\image\\" + reader[2].ToString();
+                    mixMsg.Image = Application.StartupPath + "\\image\\" + Convert.ToString(reader[2]);
                 }
-                string time = reader[3].ToString();
-                DateTime date1 = Convert.ToDateTime(time);
+                string time = Convert.ToString(reader["time"]);
+                DateTime date1 = DateTime.Parse(time);
+                //DateTime date1 = DateTime.Now;
                 DateTime date2 = DateTime.Now;
                 TimeSpan ts = date2.Subtract(date1);
                 if (ts.TotalMinutes < 60)
                 {
-                    int a = (int)ts.TotalMinutes;
-                    mixMsg.Time = a.ToString() + "分钟前";
+                    int a = Convert.ToInt32(ts.TotalMinutes);
+                    mixMsg.Time = Convert.ToString(a) + "分钟前";
                 }
                 else
                 {
                     int a = (int)ts.TotalMinutes / 60;
-                    mixMsg.Time = a.ToString() + "小时前";
+                    mixMsg.Time = Convert.ToString(a) + "小时前";
                 }
                 arrayList.Add(mixMsg);
             }

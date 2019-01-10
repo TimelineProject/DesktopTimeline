@@ -35,7 +35,7 @@ namespace TimeLine.Server.Tests
         {
             User user = new User("lkx","123");
             string command = "select account from users where account='" + user.Username + "'";
-            mockdb.Setup(d => d.DataNum(command)).Returns(-1);
+            mockdb.Setup(d => d.DataNum(command)).Returns(0);
             command = "insert into users (account,password) values('" + user.Username + "','" + user.Password + "')";
             mockdb.Setup(d => d.Execute(command)).Returns(1);
             Assert.AreEqual(1, userdao.RegisterUser(user));
@@ -94,7 +94,7 @@ namespace TimeLine.Server.Tests
             User user = new User("lkx", "123");
             string command = "select account from users where account='" + user.Username + "'";
             mockdb.Setup(d => d.DataNum(command)).Returns(-1);
-            Assert.AreEqual(1, userdao.GetUserNumByAccount(user));
+            Assert.ThrowsException<Exception>(() => userdao.GetUserNumByAccount(user));
         }
 
         [TestMethod()]

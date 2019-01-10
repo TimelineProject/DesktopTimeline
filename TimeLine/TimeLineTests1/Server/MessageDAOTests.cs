@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Moq;
 using TimeLine.Interface;
 using TimeLine.Entity;
+using System.Data;
 
 namespace TimeLine.Server.Tests
 {
@@ -65,5 +66,31 @@ namespace TimeLine.Server.Tests
             mockdb.Setup(d => d.Execute(command)).Returns(-1);
             Assert.ThrowsException<Exception>(() => messagedao.GetNum());
         }
+
+        [TestMethod()]
+        public void GetDataTest()
+        {
+            var arrayList = new List<MixMsg>();
+            MixMsg one = new MixMsg();
+            MixMsg two = new MixMsg();
+            MixMsg three = new MixMsg();
+            arrayList.Add(one);
+            arrayList.Add(two);
+            arrayList.Add(three);
+            int count = 0;
+            var mockdb = new Mock<IDatabase>();
+            var messagedao = new MessageDAO(mockdb.Object);
+            var mockDatareader = new Mock<IDataReader>();
+            mockDatareader.Setup(d => d.Read()).Returns(() => count < 3).Callback(() => count++);
+            mockDatareader.Setup(r => r["user_id"]).Returns(()=> arrayList[count-1].Account);
+            mockDatareader.Setup(r => r["information"]).Returns(() => arrayList[count - 1].Information);
+            mockDatareader.Setup(r => r["image"]).Returns(() => arrayList[count - 1].Image);
+            mockDatareader.Setup(r => r["time"]).Returns(() => arrayList[count - 1].Time);
+            for(int i = 0; i < 3; i++)
+            {
+                Assert.AreEqual(arrayList[i].Account, messagedao.GetData(mockDatareader.Object)[i].Account);
+            }
+        }
+
     }
 }
