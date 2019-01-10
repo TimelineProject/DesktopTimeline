@@ -15,12 +15,10 @@ namespace TimeLine.Server
     public class MessageDAO:IMessageDAO
     {
         private IDatabase mydatabase;
-        private IDataReader reader;
 
         public MessageDAO(IDatabase db)
         {
             mydatabase = db;
-            reader = null;
         }
 
         public int InsertDataByUserAndMessage(User user,Msg message)

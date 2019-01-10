@@ -96,7 +96,12 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Entity\MixMsgTests.cs" />
+    <Compile Include="Entity\MsgTests.cs" />
+    <Compile Include="Entity\UserTests.cs" />
+    <Compile Include="IO\ImageOPTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\DatabaseTests.cs" />
     <Compile Include="Server\MessageDAOTests.cs" />
     <Compile Include="Server\UserDAOTests.cs" />
   </ItemGroup>

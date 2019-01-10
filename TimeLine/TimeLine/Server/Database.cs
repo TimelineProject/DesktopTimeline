@@ -16,6 +16,7 @@ namespace TimeLine.Server
         private MySqlConnection mycon;
         private MySqlCommand mycom;
         private MySqlDataAdapter myDA;
+
         public Database(string con)
         {
             mycon = null;
