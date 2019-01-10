@@ -34,10 +34,12 @@ namespace TimeLine
             status.HeaderText = "图片";
             status.Width = 150;
             dataGridView1.Columns.Insert(2, status);
-
+            Database database = new Database(Program.constr);
             ImageOP imageOP = new ImageOP();
-            MessageDAO messageDAO = new MessageDAO(new Database(Program.constr));
-            List<MixMsg> arrayList = messageDAO.GetData();
+            MessageDAO messageDAO = new MessageDAO(database);
+            string command = "select account,information,image,time from infos natural join users order by time desc";
+            IDataReader reader = database.GetReader(command);
+            List<MixMsg> arrayList = messageDAO.GetData(reader);
 
             int i = 0;
             while (i < arrayList.Count)

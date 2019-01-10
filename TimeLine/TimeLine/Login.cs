@@ -45,11 +45,14 @@ namespace TimeLine
             string username = textBoxUserName.Text.Trim();
             string passw = textBoxPassword.Text.Trim();
             User user = new User(username, passw);
-            UserDAO userDAO = new UserDAO(new Database(Program.constr));
+            Database db = new Database(Program.constr);
+            UserDAO userDAO = new UserDAO(db);
             if (userDAO.GetUserNumByAccountAndPassword(user) != 0)
             {
                 MessageBox.Show("登陆成功!");
-                user.UserId = userDAO.getUserIdByUser(user);
+                string command = "select user_id from users where account ='" + user.Username + "' and password='" + user.Password + "'";
+                IDataReader reader = db.GetReader(command);
+                user.UserId = userDAO.getUserIdByUser(reader);
                 user.ValidUser = true;
                 Program.programUser = user;
                 this.Close();

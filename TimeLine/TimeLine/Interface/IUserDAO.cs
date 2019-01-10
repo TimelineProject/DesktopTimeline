@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,6 @@ namespace TimeLine.Interface
         int RegisterUser(User user);
         int GetUserNumByAccountAndPassword(User user);
         int GetUserNumByAccount(User user);
-        int getUserIdByUser(User user);
+        int getUserIdByUser(IDataReader reader);
     }
 }

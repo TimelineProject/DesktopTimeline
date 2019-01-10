@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace TimeLine.Server
     public class MessageDAO:IMessageDAO
     {
         private IDatabase mydatabase;
-        private MySqlDataReader reader;
+        private IDataReader reader;
 
         public MessageDAO(IDatabase db)
         {
@@ -26,15 +27,18 @@ namespace TimeLine.Server
         {
             string command = "insert into infos values('" + user.UserId + "','" + message.Content + "','" + message.ImagePath + "','" + message.Time + "')";
             int a = mydatabase.Execute(command);
+            if (a < 1)
+            {
+                throw new Exception();
+            }
             return a;
         }
 
-        public List<MixMsg> GetData()
+        public List<MixMsg> GetData(IDataReader reader)
         {
             List<MixMsg> arrayList = new List<MixMsg>();
-            string command = "select account,information,image,time from infos natural join users order by time desc";
-            mydatabase.CreateCommand(command);
-            reader = mydatabase.GetCommand().ExecuteReader();
+            //string command = "select account,information,image,time from infos natural join users order by time desc";
+            //reader = mydatabase.GetReader(command);
             while (reader.Read())
             {
                 MixMsg mixMsg = new MixMsg();
@@ -72,6 +76,10 @@ namespace TimeLine.Server
         {
             string command = "select account,information,image,time from infos natural join users order by time desc";
             int a = mydatabase.Execute(command);
+            if (a < 0)
+            {
+                throw new Exception();
+            }
             return a;
         }
 

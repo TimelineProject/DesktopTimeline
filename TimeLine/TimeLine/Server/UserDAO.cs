@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,10 @@ namespace TimeLine.Server
     public class UserDAO:IUserDAO
     {
         private IDatabase mydatabase;
-        private MySqlDataReader reader;
         
         public UserDAO(IDatabase db)
         {
             mydatabase = db;
-            reader = null;
         }
 
         public int RegisterUser(User user)
@@ -28,6 +27,10 @@ namespace TimeLine.Server
             }
             string command = "insert into users (account,password) values('" + user.Username + "','" + user.Password + "')";
             int a = mydatabase.Execute(command);
+            if (a != 1)
+            {
+                throw new Exception();
+            }
             return a;
         }
 
@@ -35,6 +38,10 @@ namespace TimeLine.Server
         {
             string command = "select account,password from users where account='" + user.Username + "' and password='" + user.Password + "'";
             int a = mydatabase.DataNum(command);
+            if (a < 0)
+            {
+                throw new Exception();
+            }
             return a;
         }
 
@@ -42,22 +49,26 @@ namespace TimeLine.Server
         {
             string command = "select account from users where account='" + user.Username + "'";
             int a = mydatabase.DataNum(command);
+            if (a < 0)
+            {
+                throw new Exception();
+            }
             return a;
         }
 
-        public int getUserIdByUser(User user)
+        public int getUserIdByUser(IDataReader reader)
         {
             int a=0;
-            string command = "select user_id from users where account ='" + user.Username + "' and password='" + user.Password + "'";
-            mydatabase.CreateCommand(command);
-            reader = mydatabase.GetCommand().ExecuteReader();
+            //string command = "select user_id from users where account ='" + user.Username + "' and password='" + user.Password + "'";
+            //IDataReader reader = mydatabase.GetReader(command);
             while (reader.Read())
             {
-                a = Convert.ToInt32(reader[0].ToString());
+                a = Convert.ToInt32(reader["user_id"]);
+                //a = Int32.Parse(reader["user_id"] as string);
             }
-            mydatabase.CloseDb();
-            reader.Close();
-            return a;
+           mydatabase.CloseDb();
+           reader.Close();
+           return a;
         }
     }
 }

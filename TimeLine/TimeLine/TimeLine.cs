@@ -43,8 +43,11 @@ namespace TimeLine
 
             int a = 0;
             ImageOP imageOP = new ImageOP();
-            MessageDAO messageDAO = new MessageDAO(new Database(Program.constr));
-            List<MixMsg> arrayList = messageDAO.GetData();
+            Database database = new Database(Program.constr);
+            MessageDAO messageDAO = new MessageDAO(database);
+            string command = "select account,information,image,time from infos natural join users order by time desc";
+            IDataReader reader = database.GetReader(command);
+            List<MixMsg> arrayList = messageDAO.GetData(reader);
 
             int i = 0;
             while (i < arrayList.Count && a < 5)
@@ -79,8 +82,11 @@ namespace TimeLine
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
             ImageOP imageOP = new ImageOP();
-            MessageDAO messageDAO = new MessageDAO(new Database(Program.constr));
-            List<MixMsg> arrayList = messageDAO.GetData();
+            Database database = new Database(Program.constr);
+            MessageDAO messageDAO = new MessageDAO(database);
+            string command = "select account,information,image,time from infos natural join users order by time desc";
+            IDataReader reader = database.GetReader(command);
+            List<MixMsg> arrayList = messageDAO.GetData(reader);
 
             int n = arrayList.Count();
             if (n == row)

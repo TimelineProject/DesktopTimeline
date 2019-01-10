@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace TimeLine.Server
 {
     public class Database:IDatabase
     {
-        private static string mystr;
+        private string mystr;
         private MySqlConnection mycon;
         private MySqlCommand mycom;
         private MySqlDataAdapter myDA;
@@ -65,6 +66,11 @@ namespace TimeLine.Server
             this.CloseDb();
             return n;
         } 
-
+        public IDataReader GetReader(string command)
+        {
+            this.CreateCommand(command);
+            MySqlDataReader reader = mycom.ExecuteReader();
+            return reader;
+        }
     }
 }
